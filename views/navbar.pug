@@ -1,0 +1,26 @@
+doctype html
+html
+    title="MovieReview"
+    link(rel='stylesheet' href='/stylesheets/reset.css')
+    link(rel='stylesheet' href='/stylesheets/navbar.css')
+    block head
+body
+    nav(class="top-navbar")
+        div: a(class="logo" href="/"): img(class="top-navbar-logo" src="/images/logo.png", alt="MovieReview")
+        form(class="top-navbar-form" action="/movies/search", method="post")
+            input(type='hidden' name='_csrf' value=token)
+            input(class="search" type='text' name='query' placeholder='Search our movie catalogue')
+        if locals.authenticated
+            span(class='navbar-text px-4') Welcome #{user.firstName}!
+            form(class='form-inline pr-4' action='/logout' method='post')
+                button(class='nav-button' type='submit') Logout
+        else
+            form(class='form-inline' action='/login' method='get')
+                button(class='nav-button' type='submit') Login
+            form(class='form-inline' action='/signup' method='get')
+                button(class='nav-button' type='submit') Register
+    nav(class="bottom-navbar")
+        a(class="home buttons" href='/') Home
+        a(class="vaults buttons" href='/vaults') Vaults
+        a(class="browse buttons" href='/movies') Browse
+    div(class="nav-background")

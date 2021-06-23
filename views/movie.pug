@@ -1,0 +1,62 @@
+extends layout
+
+include utils.pug
+
+append head
+  script(src="/javascripts/movie.js" type="module" defer)
+
+block content
+  div.mainMovie
+    div.mainContainer
+      div#moviecol
+        img.mainMoviePoster(src= movie.posterPath)
+        div.watchedsection
+          div.watchedbutton
+            if vaults
+              form(action=`/movies/:id/watched` method='post')
+                input(type='hidden' name='_csrf' value=token)
+                input#movieId(type='hidden' name='movieId' value=movie.id)
+                button#watched(type="submit")
+                  if watched
+                    span#watchedSpan Watched
+                  else
+                    span#watchedSpan Unwatched
+            if vaults
+              form(action=`/movies/:id/vaulted` method='post')
+                input(type='hidden' name='_csrf' value=token)
+                input(type='hidden' name='movieId' value=movie.id)
+                select#select(name='vaultId')
+                  option(value='') --Choose Vault--
+                  each vault in vaults
+                    option(value=vault.id)= vault.name
+                button#addToVault(type="submit") ➕
+      div#moviecont
+        h1#movietitle.movieHeader= movie.title
+        br
+        div.moviedetails= `Description: ${movie.description}`
+        br
+        div= `Release Date: ${movie.releaseDate}`
+        br
+        div= `Genre: ${movie.Genre.name}`
+        div
+  h1(class='review-header submission')= "Reviews"
+  div
+  form(class='submission' method='POST' action=`/movies/${movie.id}/reviews`)
+    input(type='hidden' name='_csrf' value=token)
+    textarea(contenteditable="true" class='review-area submission' name='content' placeholder='Add a review!')
+    div
+    button(class='review-button submission' type='submit') Submit Review!
+    div
+  div(class='review-collection')
+    each review in movie.Reviews
+      if review.content
+        div(class='user')= movie.Users.filter(e => e.dataValues.id === review.userId).map((e) => e.dataValues.firstName)
+        div(class='date')= (String(review.updatedAt).slice(0, 3) + ", " + String(review.updatedAt).slice(4, 16))
+        div(class='review')= review.content
+          div(class='review-buttons')
+            form(class='edit' method="POST" action=`/movies/${movie.id}/reviews/${review.id}/edit`)
+              input(type='hidden' name='_csrf' value=token)
+              button(class='edit-button button' type='submit') Edit
+            form(class='delete' method="POST" action=`/movies/${movie.id}/reviews/${review.id}/delete`)
+              input(type='hidden' name='_csrf' value=token)
+              button(class='delete-button button' type='submit') Delete

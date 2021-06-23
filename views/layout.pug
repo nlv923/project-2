@@ -1,0 +1,32 @@
+doctype html
+html
+  head
+      block head
+        title="MovieReview"
+        meta(name='image', property='og:image', content='/images/screenshot.png')
+        link(rel='stylesheet' href='/stylesheets/reset.css')
+        link(rel='stylesheet' href='/stylesheets/index.css')
+        link(rel='stylesheet' href='/stylesheets/movie.css')
+        link(rel='stylesheet' href='/stylesheets/reviews.css')
+        link(rel='stylesheet' href='/stylesheets/vaults.css')
+        link(rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css")
+  body
+    include utils.pug
+    include navbar.pug
+    block content
+
+    footer
+
+      div(class='siteLinks')
+        h2 Site Links
+        div
+          a(href="/") Home
+        div
+          a(href="/login") Log In
+        div
+          a(href="/signup") Register
+        div
+          a(href="/movies") Movie Catalogue
+        div
+          a(href="/vaults") Your Movie Vaults
+

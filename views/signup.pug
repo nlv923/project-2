@@ -1,0 +1,22 @@
+extends layout
+
+include utils.pug
+
+block content
+    div(class="form-div")
+        h2 Sign up to MovieReview 
+        +validationErrorSummary(errors)
+        form(action="/signup" method="POST")
+            input(type='hidden' name='_csrf' value=token)
+            +formField("First Name", "firstName", 'Enter your first name')
+            div
+            +formField("Last Name", "lastName", 'Enter your last name')
+            div
+            +formField("E-mail", "email", 'Enter your email address' , "email")
+            div
+            +formField("Password", "password", null , "password")
+            div
+            +formField("Confirm Password", "confirmPassword", null, "password")
+            button(type='submit' class="nav-button") Register
+        div
+            p: a(href="/login") Already have an account? Log in
